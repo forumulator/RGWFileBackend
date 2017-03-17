@@ -69,13 +69,13 @@ Steps:
 
 ```
 
-ObjectID: A Hash of the objects contents
-Size: In bytes
-ObjectName: A user friendly name
-BucketID: A Secondary Key
-
-Regions: Not Supported
-ACL, Owners: Not Currently Supported
+ObjectID: A Hash of the objects contents  
+Size: In bytes  
+ObjectName: A user friendly name  
+BucketID: A Secondary Key  
+  
+Regions: Not Supported  
+ACL, Owners: Not Currently Supported  
 
 
 ## 3. Support for S3 Operations:
