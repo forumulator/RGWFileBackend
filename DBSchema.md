@@ -81,19 +81,19 @@ ACL, Owners: Not Currently Supported
 ## 3. Support for S3 Operations:
 
 
-a.) Creating a bucket: Insert into the bucket table, with default values. Name provided by user.
-b.) Removing a bucket: Along with all the objects in the Bucket. Atomic transaction that:
-		i.) Removes all the objects from ObjectStore JOIN ObjectDirectory With given bucketId
-		ii.) Removes all the Objects in the bucket from ObjectDirectory
-		iii.) Removes the bucket from Bucket.
+1. Creating a bucket: Insert into the bucket table, with default values. Name provided by user.
+2. Removing a bucket: Along with all the objects in the Bucket. Atomic transaction that:
+	1. Removes all the objects from ObjectStore JOIN ObjectDirectory With given bucketId
+	2. Removes all the Objects in the bucket from ObjectDirectory
+	3. Removes the bucket from Bucket.
 
-c.) Listing Buckets: SELECT * from Bucket
-d.) Uploading an Object: Requires a Bucket Name, Object Content. Atomic transaction:
-		i.) Hash the objectID, Store the Data and ID in ObjectStore
-		ii.) Store the metadata including BucketID in ObjectDirectory
-		iii.) Increment the number of objects in a bucket by 1
-e.) Removing an Object: Exactly the opposite of Uploading, does not require bucketId.
-f.) Listing Objects in a bucket: SELECT ObjectID FROM ObjectDirectory WHERE  BucketId = ID.
+3. Listing Buckets: SELECT * from Bucket
+4. Uploading an Object: Requires a Bucket Name, Object Content. Atomic transaction:
+	1. Hash the objectID, Store the Data and ID in ObjectStore
+	2. Store the metadata including BucketID in ObjectDirectory
+	3. Increment the number of objects in a bucket by 1
+5. Removing an Object: Exactly the opposite of Uploading, does not require bucketId.
+6. Listing Objects in a bucket: SELECT ObjectID FROM ObjectDirectory WHERE  BucketId = ID.
 
 
 ## 4. Chunked Uploads and Large Object Support:
