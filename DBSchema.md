@@ -179,8 +179,9 @@ ensure atomicity and integrity in this case?
 
 #### Questions to ponder:
 
-1. In Chunked Uploads, Split object table into two, LOBDirectory and SOBDirectory?
-2. Keep ObjectID incremental or make it hash of the object?
-3. In chunked uploads, if a later upload request on an object finishes before the earlier one
+1. Should we have one ObjectDirectory per bucket, or a single one with one ObjectStore (and one LargeObjectStore) per bucket? Or just one of each for entire backend?
+2. In Chunked Uploads, Split object table into two, LOBDirectory and SOBDirectory?
+3. Keep ObjectID incremental or make it hash of the object?
+4. In chunked uploads, if a later upload request on an object finishes before the earlier one
    should the earlier one be aborted?
-4. Should Transfers be an array of Transfers objects insted of Table?
+5. Should Transfers be an array of Transfers objects insted of Table?
