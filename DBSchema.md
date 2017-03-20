@@ -43,7 +43,7 @@ Steps:
 
 #### RELATIONS:
 ```
-   Bucket (
+	Bucket (
 		BucketID: Integer PRIMARY KEY,
 		BucketName: VARCHAR UNIQUE,
 		// Bucket ACL: ??,
@@ -53,7 +53,7 @@ Steps:
 		ObjectCount: Integer
 	)
   
-  ObjectDirectory (
+  	ObjectDirectory (
 		ObjectID: VARCHAR PRIMARY KEY,
 		ObjectName: TEXT,
 		BucketId: Integer FOREIGN KEY REFERENCES Bucket,
@@ -81,19 +81,20 @@ ACL, Owners: Not Currently Supported
 ## 3. Support for S3 Operations:
 
 
-1. Creating a bucket: Insert into the bucket table, with default values. Name provided by user.
+1. Creating a bucket: Insert into the bucket table, with values. Name provided by user.  
+	` INSERT INTO Bucket VALUES (...)`
 2. Removing a bucket: Along with all the objects in the Bucket. Atomic transaction that:
-	1. Removes all the objects from ObjectStore JOIN ObjectDirectory With given bucketId
+	1. Removes all the objects from `ObjectStore JOIN ObjectDirectory` With given `BucketId`
 	2. Removes all the Objects in the bucket from ObjectDirectory
 	3. Removes the bucket from Bucket.
 
-3. Listing Buckets: SELECT * from Bucket
+3. Listing Buckets: `SELECT * FROM Bucket`
 4. Uploading an Object: Requires a Bucket Name, Object Content. Atomic transaction:
-	1. Hash the objectID, Store the Data and ID in ObjectStore
-	2. Store the metadata including BucketID in ObjectDirectory
+	1. Hash the objectID, Store the Data and ID in `ObjectStore`
+	2. Store the metadata including `BucketID` in `ObjectDirectory`
 	3. Increment the number of objects in a bucket by 1
-5. Removing an Object: Exactly the opposite of Uploading, does not require bucketId.
-6. Listing Objects in a bucket: SELECT ObjectID FROM ObjectDirectory WHERE  BucketId = ID.
+5. Removing an Object: Exactly the opposite of Uploading, does not require `BucketId`.
+6. Listing Objects in a bucket: `SELECT ObjectID FROM ObjectDirectory WHERE  BucketId = ID`.
 
 
 ## 4. Chunked Uploads and Large Object Support:
@@ -147,7 +148,7 @@ multiple partially uploaded versions of the object. The versions to be read on a
 
 Clearly, since the bucket listing is done based on the `ObjectDirectry` table, it won't show partially uploaded objects(or versions).
 
-The Synchronisation of the uploads and correctnedd of the `ObjectDirectory` table is the job of the transfer manager in the backend.
+The Synchronisation of the uploads and correctness of the `ObjectDirectory` table is the job of the transfer manager in the backend.
 At any instant, there will be exactly one complete upload of an object. This is taken care of as follows:
 
 ```
@@ -185,3 +186,8 @@ ensure atomicity and integrity in this case?
 4. In chunked uploads, if a later upload request on an object finishes before the earlier one
    should the earlier one be aborted?
 5. Should Transfers be an array of Transfers objects insted of Table?
+6. Should bucketID(and made an index) also be stored along with LargeObjectStore (and small) for quick removal of all objects from a bucket?
+7. Can user specify ObjectID?
+
+- Modify transferManager synch. algo so that if an current object copy is removed while the next version is still uploading, it doesn't attempt to delete an nonexistent object. 
+- 
