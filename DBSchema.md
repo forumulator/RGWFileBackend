@@ -143,7 +143,7 @@ The extra fields and Tables is to ensure the correctness of the transfer orders.
 This is implicit from the Size, anyway(but Semantics?). 
 
 For a small value store, the object is simply referenced by ID. For the large value store, we join the different chunks of the object using the Attribute `FirstSegment Hash`, which is the Hashed value of the first data segment uploaded. This is necessary becuase the large value store may have 
-multiple partially uploaded versions of the object. The versions to be read on a GET request is the one with the FirstSegment as that of the record in the
+multiple partially uploaded versions of the object. The versions to be read on a GET request is the one with the `FirstSegment Hash` as that of the record in the
 `ObjectDirectory`. This is also why `FirstSegment Hash` is also part of the primary key.
 
 Clearly, since the bucket listing is done based on the `ObjectDirectry` table, it won't show partially uploaded objects(or versions).
