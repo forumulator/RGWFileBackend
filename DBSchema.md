@@ -164,9 +164,10 @@ For a particular ObjectID I:
 
 ```
 
-All the above operations needs to be done atomically. As an example, Let Object with ID = 5 have a copy O1 stored currently. If there are two
-upload requests O2 and O3 for this object. If O2 completes before O3, on completion, O2 replaces O1 and O3 replaces O2. However,
-if O3 completes before O2, when O3 finishes, it will delete O1 and set the object record in `ObjectDirectory`, and then when O2 completes, it won't replace O3 since O3 started after O2(that is, it is a more recent request).
+All the above operations needs to be done atomically. As an example, Let Object with ID = 5 have a copy O1 stored currently and suppose there are two
+upload requests O2 and O3 for this object(O3 more recent than O2).  
+- If O2 completes before O3, on completion, O2 replaces O1 and O3 replaces O2.  
+- If O3 completes before O2, when O3 finishes, it will delete O1 and set the object record in `ObjectDirectory`, and then when O2 completes, it won't replace O3 since O3 started after O2(that is, it is a more recent request).
 
 This satisfies the third of the additional requirements, since the `FirstSegment Hash` only changes in the `ObjectDirectory` after the transfer finishes.
 
