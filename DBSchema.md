@@ -47,7 +47,7 @@ Steps:
 		BucketID: Integer PRIMARY KEY,
 		BucketName: VARCHAR UNIQUE,
 		// Bucket ACL: ??,
-		// BuckerOwner: Interger FOREIGN KEY REFERENCES User.Uid,
+		// BuckerOwner: Interger REFERENCES User.Uid,
 		Created: Date,
 		// Location: VARCHAR,
 		ObjectCount: Integer
@@ -56,20 +56,20 @@ Steps:
   	ObjectDirectory (
 		ObjectID: VARCHAR PRIMARY KEY,
 		ObjectName: TEXT,
-		BucketId: Integer FOREIGN KEY REFERENCES Bucket,
+		BucketId: Integer REFERENCES Bucket,
 		Created: Date,
 		Size: Integer
 	)
 
 	ObjectStore (
-		ObjectID: VARCHAR FOREIGN KEY REFERENCES ObjectDirectory, 
+		ObjectID: VARCHAR REFERENCES ObjectDirectory, 
 		Data: BLOB,
 		PRIMARY KEY(ObjectID)
 	)
 
 ```
 
-ObjectID: A Hash of the objects contents  
+ObjectID: Incremental for now.
 Size: In bytes  
 ObjectName: A user friendly name  
 BucketID: A Secondary Key  
@@ -119,7 +119,7 @@ And the modified the ObjectDirectory looks like this:
 	ObjectDirectory (
 		ObjectID: Varchar PRIMARY KEY,
 		ObjectName: TEXT,
-		BucketId: Integer FOREIGN KEY REFERENCES Bucket,
+		BucketId: Integer REFERENCES Bucket,
 		Created: Date,
 		LOB Flag: Char,
 		Size: Integer,
@@ -139,7 +139,7 @@ And the modified the ObjectDirectory looks like this:
 	)
 
 ```
-The extra fields and Tables is to ensure the correctness of the transfer orders. The `LOB flag` stores which store the object data will be found in.
+The extra fields and Tables is to ensure the correctness of the transfer orders. The `LOB flag` indicates which store the object data will be found in.
 This is implicit from the Size, anyway(but Semantics?). 
 
 For a small value store, the object is simply referenced by ID. For the large value store, we join the different chunks of the object using the Attribute `FirstSegment Hash`, which is the Hashed value of the first data segment uploaded. This is necessary becuase the large value store may have 
