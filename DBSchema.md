@@ -69,7 +69,7 @@ Steps:
 
 ```
 
-ObjectID: Incremental for now.
+ObjectID: Incremental for now  
 Size: In bytes  
 ObjectName: A user friendly name  
 BucketID: A Secondary Key  
